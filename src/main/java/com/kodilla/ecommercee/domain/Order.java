@@ -26,18 +26,11 @@ public class Order {
     private String status;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Column(name="CART_ID")
-    private Cart cart;
-
-    @NotNull
     @Column(name="ORDER_DATE")
     private LocalDate orderDate;
 
-    @NotNull
+    //here should be Cart  id
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
-    private User user;
+    //here should be user id
 
 }
