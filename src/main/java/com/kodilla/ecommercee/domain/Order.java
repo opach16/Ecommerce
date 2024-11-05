@@ -29,8 +29,16 @@ public class Order {
     @Column(name="ORDER_DATE")
     private LocalDate orderDate;
 
-    //here should be Cart  id
+    @NotNull
+    @OneToOne
+    @JoinColumn(name="CART_ID")
+    private Cart cart;
 
-    //here should be user id
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="USER_ID")
+    private User user;
+
+
 
 }

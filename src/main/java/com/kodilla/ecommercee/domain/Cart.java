@@ -34,9 +34,9 @@ public class Cart {
     @Column(name="ORDERED")
     private boolean ordered;
 
-//    @ManyToOne
-//    @JoinColumn(name="USER_ID")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
 
     private BigDecimal total;
 
