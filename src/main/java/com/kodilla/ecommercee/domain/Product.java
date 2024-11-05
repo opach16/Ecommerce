@@ -23,15 +23,19 @@ public class Product {
     private Long id;
 
     @NotNull
+    @Column(name = "NAME")
     private String name;
 
     @NotNull
+    @Column(name = "DESCRIPTION")
     private String description;
 
     @NotNull
+    @Column(name = "PRICE")
     private BigDecimal price;
 
     @NotNull
+    @Column(name = "STOCK")
     private Integer stock;
 
     @ManyToOne(fetch = FetchType.LAZY)
