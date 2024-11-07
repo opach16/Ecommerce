@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +19,8 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRODUCT_ID", unique = true, nullable = false)
+    @Column(name = "PRODUCT_ID", unique = true, nullable = false, updatable = false)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
