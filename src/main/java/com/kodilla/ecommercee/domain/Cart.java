@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +49,7 @@ public class Cart {
     protected void onCreate() {
         ordered = false;
     }
-    
+
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
     }
