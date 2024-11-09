@@ -19,6 +19,7 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GROUP_ID", unique = true, nullable = false, updatable = false)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
