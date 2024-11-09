@@ -1,16 +1,15 @@
 package com.kodilla.ecommercee.domain;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,8 +17,8 @@ import java.util.List;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name="ID")
+    @Column(name="ID", unique=true, nullable=false, updatable=false)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @OneToMany(
@@ -28,7 +27,7 @@ public class Cart {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @NotNull
     @Column(name="ORDERED")
@@ -38,15 +37,19 @@ public class Cart {
     @JoinColumn(name="USER_ID")
     private User user;
 
+    @Column(name="TOTAL")
     private BigDecimal total;
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public Cart(User user) {
+        this.user = user;
+        this.ordered = false;
     }
 
-    public void setOrdered(@NotNull boolean ordered) {
-        this.ordered = ordered;
+    @PrePersist
+    protected void onCreate() {
+        ordered = false;
     }
+
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
     }
