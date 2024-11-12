@@ -20,7 +20,7 @@ public class CartItem {
     @Column(name="ID",unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name="CART_ID")
     private Cart cart;
@@ -43,6 +43,9 @@ public class CartItem {
     public void setQuantity(@NotNull Integer quantity) {
         this.quantity = quantity;
     }
+   public void removeFromCart(){
+        this.cart = null;
+   }
 
     @Override
     public boolean equals(Object o) {

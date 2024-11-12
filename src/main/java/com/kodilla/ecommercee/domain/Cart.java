@@ -24,6 +24,7 @@ public class Cart {
     @OneToMany(
             targetEntity = CartItem.class,
             mappedBy = "cart",
+            orphanRemoval = true,
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
@@ -55,5 +56,6 @@ public class Cart {
     }
     public void removeCartItem(CartItem cartItem) {
         this.cartItems.remove(cartItem);
+        cartItem.removeFromCart();
     }
 }
