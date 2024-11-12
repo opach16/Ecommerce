@@ -34,7 +34,7 @@ public class Order {
     private Cart cart;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name="USER_ID")
     private User user;
 

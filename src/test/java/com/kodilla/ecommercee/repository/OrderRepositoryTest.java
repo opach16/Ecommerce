@@ -30,16 +30,18 @@ class OrderRepositoryTest {
     private ProductRepository productRepository;
 
     @AfterEach
-    void cleanUp(){
+    void cleanUp() {
         orderRepository.deleteAll();
         cartRepository.deleteAll();
         userRepository.deleteAll();
+        productRepository.deleteAll();
+        cartItemRepository.deleteAll();
     }
 
     @Test
     void shouldSaveOrder() {
         //given
-        User user = new User("Marcin","Pajak","test@test.com","pele","password","accesKey");
+        User user = new User("Marcin", "Pajak", "test@test.com", "pele", "password", "accesKey");
         userRepository.save(user);
 
         Cart cart = new Cart(user);
@@ -57,10 +59,11 @@ class OrderRepositoryTest {
         assertEquals(order.getStatus(), orderOptional.get().getStatus());
 
     }
+
     @Test
-    void shouldFindAllOrders(){
+    void shouldFindAllOrders() {
         //given
-        User user = new User("Marcin","Pajak","test@test.com","pele","password", "accessKey");
+        User user = new User("Marcin", "Pajak", "test@test.com", "pele", "password", "accessKey");
         userRepository.save(user);
 
         Cart cart = new Cart(user);
@@ -68,7 +71,7 @@ class OrderRepositoryTest {
         cartRepository.save(cart);
         cartRepository.save(cart2);
 
-        Order order = new Order(  cart, user);
+        Order order = new Order(cart, user);
         Order order2 = new Order(cart2, user);
         orderRepository.save(order);
         orderRepository.save(order2);
@@ -78,14 +81,15 @@ class OrderRepositoryTest {
         assertEquals(2, orders.size());
 
     }
+
     @Test
-    void shouldFindOrderById(){
+    void shouldFindOrderById() {
         //given
-        User user = new User("Marcin","Pajak","test@test.com","pele","password","accessKey");
+        User user = new User("Marcin", "Pajak", "test@test.com", "pele", "password", "accessKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
-        Order order = new Order( cart, user);
+        Order order = new Order(cart, user);
         orderRepository.save(order);
         //when
         Optional<Order> orderOptional = orderRepository.findById(order.getId());
@@ -95,14 +99,15 @@ class OrderRepositoryTest {
         assertEquals(order.getId(), orderOptional.get().getId());
 
     }
+
     @Test
-    void shouldUpdateOrderWithNewData(){
+    void shouldUpdateOrderWithNewData() {
         //given
-        User user = new User("Marcin","Pajak","test@test.com","pele","password","accessKey");
+        User user = new User("Marcin", "Pajak", "test@test.com", "pele", "password", "accessKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
-        Order order = new Order(  cart, user);
+        Order order = new Order(cart, user);
         orderRepository.save(order);
         //when
         order.changeStatus("SEND");
@@ -112,10 +117,11 @@ class OrderRepositoryTest {
         Optional<Order> orderOptional = orderRepository.findById(order.getId());
         assertEquals("SEND", orderOptional.get().getStatus());
     }
+
     @Test
-    void shouldDeleteOrder(){
+    void shouldDeleteOrder() {
         //given
-        User user = new User("Marcin","Pajak","test@test.com","pele","password","accesKey");
+        User user = new User("Marcin", "Pajak", "test@test.com", "pele", "password", "accesKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
@@ -131,19 +137,20 @@ class OrderRepositoryTest {
         //then
         assertFalse(orderOptional.isPresent());
     }
+
     @Test
-    void shouldUpdateOrderWithNewCartItem(){
+    void shouldUpdateOrderWithNewCartItem() {
         //given
-        User user = new User("Marcin","Pajak","test@test.com","pele","password","accessKey");
+        User user = new User("Marcin", "Pajak", "test@test.com", "pele", "password", "accessKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
-        Order order = new Order( cart, user);
+        Order order = new Order(cart, user);
         orderRepository.save(order);
 
-        Product product = new Product("hammer","sth to hammer",new BigDecimal(15),14,null);
-       productRepository.save(product);
-        CartItem cartItem = new CartItem(cart,15,product);
+        Product product = new Product("hammer", "sth to hammer", new BigDecimal(15), 14, null);
+        productRepository.save(product);
+        CartItem cartItem = new CartItem(cart, 15, product);
         cartItemRepository.save(cartItem);
         cart.addCartItem(cartItem);
 
@@ -152,7 +159,7 @@ class OrderRepositoryTest {
         //when
         Long id = order.getId();
         Optional<Order> orderOptional = orderRepository.findById(id);
-        assertEquals(product.getName(),orderOptional.get().getCart().getCartItems().getFirst().getProduct().getName());
+        assertEquals(product.getName(), orderOptional.get().getCart().getCartItems().getFirst().getProduct().getName());
 
 
     }
