@@ -44,4 +44,8 @@ public class Order {
         this.cart = cart;
         this.user = user;
     }
+
+    public void changeStatus(String status) {
+        this.status = status;
+    }
 }

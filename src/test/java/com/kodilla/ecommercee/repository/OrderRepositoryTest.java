@@ -100,6 +100,14 @@ class OrderRepositoryTest {
         Order order = new Order("PREPARING", LocalDate.now(),  cart, user);
         orderRepository.save(order);
         //when
+        order.changeStatus("SEND");
+        orderRepository.save(order);
+
+        //then
+        Optional<Order> orderOptional = orderRepository.findById(order.getId());
+        assertEquals("SEND", orderOptional.get().getStatus());
+
+
 
     }
 }

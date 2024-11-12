@@ -50,7 +50,7 @@ public class Cart {
         this.total = total;
     }
 
-    public void setOrdered(@NotNull boolean ordered) {
+    public void setOrdered(boolean ordered) {
         this.ordered = ordered;
     }
     public void addCartItem(CartItem cartItem) {
