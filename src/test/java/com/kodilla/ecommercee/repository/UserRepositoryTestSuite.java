@@ -22,10 +22,10 @@ public class UserRepositoryTestSuite {
     private UserRepository userRepository;
 
     @Autowired
-    private CartDao cartDao;
+    private CartRepository cartRepository;
 
     @Autowired
-    private OrderDao orderDao;
+    private OrderRepository orderRepository;
 
     @BeforeEach
     void setUp() {
@@ -111,14 +111,14 @@ public class UserRepositoryTestSuite {
         User savedUser = userRepository.save(user);
         Cart cart = new Cart(savedUser);
         cart.setTotal(new BigDecimal("100.00"));
-        Cart savedCart = cartDao.save(cart);
+        Cart savedCart = cartRepository.save(cart);
         Order order = new Order(savedCart, savedUser);
-        Order savedOrder = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
         //when
         userRepository.deleteById(savedUser.getId());
         Optional<User> retrievedUser = userRepository.findById(savedUser.getId());
-        Optional<Cart> retrievedCart = cartDao.findById(savedCart.getId());
-        Optional<Order> retrievedOrder = orderDao.findById(savedOrder.getId());
+        Optional<Cart> retrievedCart = cartRepository.findById(savedCart.getId());
+        Optional<Order> retrievedOrder = orderRepository.findById(savedOrder.getId());
         //then
         assertTrue(retrievedUser.isEmpty());
         assertTrue(retrievedCart.isEmpty());
