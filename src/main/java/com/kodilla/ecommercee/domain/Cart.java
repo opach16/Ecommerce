@@ -25,7 +25,7 @@ public class Cart {
             targetEntity = CartItem.class,
             mappedBy = "cart",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<CartItem> cartItems = new ArrayList<>();
 
@@ -52,5 +52,8 @@ public class Cart {
 
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
+    }
+    public void removeCartItem(CartItem cartItem) {
+        this.cartItems.remove(cartItem);
     }
 }
