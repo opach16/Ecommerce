@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,7 +20,7 @@ public class CartItem {
     @Column(name="ID",unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name="CART_ID")
     private Cart cart;
@@ -40,5 +42,26 @@ public class CartItem {
 
     public void setQuantity(@NotNull Integer quantity) {
         this.quantity = quantity;
+    }
+   public void removeFromCart(){
+        this.cart = null;
+   }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CartItem cartItem = (CartItem) o;
+        return id.equals(cartItem.id) && Objects.equals(cart, cartItem.cart) && Objects.equals(quantity, cartItem.quantity) && Objects.equals(product, cartItem.product);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + Objects.hashCode(cart);
+        result = 31 * result + Objects.hashCode(quantity);
+        result = 31 * result + Objects.hashCode(product);
+        return result;
     }
 }

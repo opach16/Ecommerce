@@ -7,7 +7,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +33,7 @@ public class UserRepositoryTestSuite {
     void cleanUp(){
         userRepository.deleteAll();
     }
+
     @DisplayName("Should save a user and verify it exists with correct details in the repository")
     @Test
     void addUser() {
@@ -53,7 +53,6 @@ public class UserRepositoryTestSuite {
         assertFalse(retrievedUser.get().isBlocked());
         assertEquals(savedUser.getCreatedAt(), retrievedUser.get().getCreatedAt());
     }
-
 
     @DisplayName("Should update user details and verify changes with the repository")
     @Test
@@ -105,7 +104,6 @@ public class UserRepositoryTestSuite {
         assertTrue(retrievedUser.isEmpty());
     }
 
-
     @Disabled
     @DisplayName("Should remove user and related carts and orders from the repository")
     @Test
@@ -113,16 +111,12 @@ public class UserRepositoryTestSuite {
         //given
         User user = new User("fname", "lname", "email", "uname", "pass", "123!");
         User savedUser = userRepository.save(user);
-
         Cart cart = new Cart(savedUser);
         Cart savedCart = cartRepository.save(cart);
-
         Order order = new Order(savedCart, savedUser);
         Order savedOrder = orderRepository.save(order);
-
         //when
         userRepository.deleteById(savedUser.getId());
-
         Optional<User> retrievedUser = userRepository.findById(savedUser.getId());
         Optional<Cart> retrievedCart = cartRepository.findById(savedCart.getId());
         Optional<Order> retrievedOrder = orderRepository.findById(savedOrder.getId());
