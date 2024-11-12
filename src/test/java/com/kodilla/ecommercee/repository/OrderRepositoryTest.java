@@ -3,6 +3,7 @@ package com.kodilla.ecommercee.repository;
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,15 +25,22 @@ class OrderRepositoryTest {
     @Autowired
     private CartRepository cartRepository;
 
+    @AfterEach
+    void cleanUp(){
+        orderRepository.deleteAll();
+        cartRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
     @Test
     void shouldSaveOrder() {
         //given
-        User user = new User(12L,"Marcin","Pajak","test@test.com","pele","password","false",false, LocalDateTime.now());
+        User user = new User("Marcin","Pajak","test@test.com","pele","password","accesKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
 
-        Order order = new Order("PREPARING", LocalDate.now(),  cart, user);
+        Order order = new Order(cart, user);
         //when
         orderRepository.save(order);
         //then
@@ -42,14 +50,12 @@ class OrderRepositoryTest {
         assertEquals(order.getStatus(), orderOptional.get().getStatus());
 
         //clean up
-        orderRepository.deleteAll();
-        cartRepository.deleteAll();
-        userRepository.deleteAll();
+
     }
     @Test
     void shouldFindAllOrders(){
         //given
-        User user = new User(12L,"Marcin","Pajak","test@test.com","pele","password","false",false, LocalDateTime.now());
+        User user = new User("Marcin","Pajak","test@test.com","pele","password", "accessKey");
         userRepository.save(user);
 
         Cart cart = new Cart(user);
@@ -57,8 +63,8 @@ class OrderRepositoryTest {
         cartRepository.save(cart);
         cartRepository.save(cart2);
 
-        Order order = new Order("PREPARING", LocalDate.now(),  cart, user);
-        Order order2 = new Order("PREPARING", LocalDate.now(), cart2, user);
+        Order order = new Order(  cart, user);
+        Order order2 = new Order(cart2, user);
         orderRepository.save(order);
         orderRepository.save(order2);
         //when
@@ -73,11 +79,11 @@ class OrderRepositoryTest {
     @Test
     void shouldFindOrderById(){
         //given
-        User user = new User(12L,"Marcin","Pajak","test@test.com","pele","password","false",false, LocalDateTime.now());
+        User user = new User("Marcin","Pajak","test@test.com","pele","password","accessKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
-        Order order = new Order("PREPARING", LocalDate.now(),  cart, user);
+        Order order = new Order( cart, user);
         orderRepository.save(order);
         //when
         Optional<Order> orderOptional = orderRepository.findById(order.getId());
@@ -93,11 +99,11 @@ class OrderRepositoryTest {
     @Test
     void shouldUpdateOrderWithNewData(){
         //given
-        User user = new User(12L,"Marcin","Pajak","test@test.com","pele","password","false",false, LocalDateTime.now());
+        User user = new User("Marcin","Pajak","test@test.com","pele","password","accessKey");
         userRepository.save(user);
         Cart cart = new Cart(user);
         cartRepository.save(cart);
-        Order order = new Order("PREPARING", LocalDate.now(),  cart, user);
+        Order order = new Order(  cart, user);
         orderRepository.save(order);
         //when
         order.changeStatus("SEND");
@@ -106,7 +112,6 @@ class OrderRepositoryTest {
         //then
         Optional<Order> orderOptional = orderRepository.findById(order.getId());
         assertEquals("SEND", orderOptional.get().getStatus());
-
 
 
     }

@@ -1,7 +1,6 @@
 package com.kodilla.ecommercee.repository;
 
 
-import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.CartItem;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,7 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface CartItemDao extends CrudRepository<CartItem, Long> {
+public interface CartItemRepository extends CrudRepository<CartItem, Long> {
     @Override
     List<CartItem> findAll();
 

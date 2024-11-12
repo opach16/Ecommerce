@@ -22,10 +22,10 @@ public class UserRepositoryTestSuite {
     private UserRepository userRepository;
 
     @Autowired
-    private CartDao cartDao;
+    private CartRepository cartDao;
 
     @Autowired
-    private OrderDao orderDao;
+    private OrderRepository orderDao;
 
     @BeforeEach
     void setUp() {

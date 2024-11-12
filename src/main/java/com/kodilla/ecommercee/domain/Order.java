@@ -39,6 +39,12 @@ public class Order {
     @JoinColumn(name="USER_ID")
     private User user;
 
+    public Order(Cart cart, User user) {
+        this.cart = cart;
+        this.user = user;
+        this.orderDate = LocalDate.now();
+        this.status = "CREATED";
+    }
 
 
 }

@@ -40,6 +40,15 @@ public class Cart {
 
     private BigDecimal total;
 
+    public Cart(User user) {
+        this.user = user;
+    }
+
+    public Cart(List<CartItem> cartItems, User user) {
+        this.cartItems = cartItems;
+        this.user = user;
+    }
+
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
