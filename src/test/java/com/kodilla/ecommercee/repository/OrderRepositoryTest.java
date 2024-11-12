@@ -1,13 +1,13 @@
 package com.kodilla.ecommercee.repository;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Order;
-import com.kodilla.ecommercee.domain.User;
+import com.kodilla.ecommercee.domain.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +24,10 @@ class OrderRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @AfterEach
     void cleanUp(){
@@ -37,19 +41,20 @@ class OrderRepositoryTest {
         //given
         User user = new User("Marcin","Pajak","test@test.com","pele","password","accesKey");
         userRepository.save(user);
+
         Cart cart = new Cart(user);
         cartRepository.save(cart);
 
         Order order = new Order(cart, user);
         //when
         orderRepository.save(order);
-        //then
         Long id = order.getId();
         Optional<Order> orderOptional = orderRepository.findById(id);
+        //then
+
+
         assertTrue(orderOptional.isPresent());
         assertEquals(order.getStatus(), orderOptional.get().getStatus());
-
-        //clean up
 
     }
     @Test
@@ -71,10 +76,7 @@ class OrderRepositoryTest {
         List<Order> orders = orderRepository.findAll();
         //then
         assertEquals(2, orders.size());
-        //clean up
-        orderRepository.deleteAll();
-        cartRepository.deleteAll();
-        userRepository.deleteAll();
+
     }
     @Test
     void shouldFindOrderById(){
@@ -91,10 +93,7 @@ class OrderRepositoryTest {
         assertTrue(orderOptional.isPresent());
         assertEquals(order.getStatus(), orderOptional.get().getStatus());
         assertEquals(order.getId(), orderOptional.get().getId());
-        //
-        orderRepository.deleteAll();
-        cartRepository.deleteAll();
-        userRepository.deleteAll();
+
     }
     @Test
     void shouldUpdateOrderWithNewData(){
@@ -112,7 +111,50 @@ class OrderRepositoryTest {
         //then
         Optional<Order> orderOptional = orderRepository.findById(order.getId());
         assertEquals("SEND", orderOptional.get().getStatus());
+    }
+    @Test
+    void shouldDeleteOrder(){
+        //given
+        User user = new User("Marcin","Pajak","test@test.com","pele","password","accesKey");
+        userRepository.save(user);
+        Cart cart = new Cart(user);
+        cartRepository.save(cart);
+
+        Order order = new Order(cart, user);
+        //when
+
+        orderRepository.save(order);
+        orderRepository.delete(order);
+
+        Long id = order.getId();
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        //then
+        assertFalse(orderOptional.isPresent());
+    }
+    @Test
+    void shouldUpdateOrderWithNewCartItem(){
+        //given
+        User user = new User("Marcin","Pajak","test@test.com","pele","password","accessKey");
+        userRepository.save(user);
+        Cart cart = new Cart(user);
+        cartRepository.save(cart);
+        Order order = new Order( cart, user);
+        orderRepository.save(order);
+
+        Product product = new Product("hammer","sth to hammer",new BigDecimal(15),14,null);
+       productRepository.save(product);
+        CartItem cartItem = new CartItem(cart,15,product);
+        cartItemRepository.save(cartItem);
+        cart.addCartItem(cartItem);
+
+        cartRepository.save(cart);
+        orderRepository.save(order);
+        //when
+        Long id = order.getId();
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        assertEquals(product.getName(),orderOptional.get().getCart().getCartItems().getFirst().getProduct().getName());
 
 
     }
+
 }

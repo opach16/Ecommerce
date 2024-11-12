@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,15 +19,14 @@ import java.util.List;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name="ID")
+    @Column(name="ID", unique = true, nullable = false, updatable = false)
     private Long id;
 
     @OneToMany(
             targetEntity = CartItem.class,
             mappedBy = "cart",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<CartItem> cartItems;
 
@@ -42,6 +42,8 @@ public class Cart {
 
     public Cart(User user) {
         this.user = user;
+        this.cartItems  = new ArrayList<CartItem>();
+        this.ordered = false;
     }
 
     public Cart(List<CartItem> cartItems, User user) {

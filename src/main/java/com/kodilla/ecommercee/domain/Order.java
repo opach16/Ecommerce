@@ -17,8 +17,7 @@ import java.time.LocalDate;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name="ID")
+    @Column(name="ID",unique = true, nullable = false, updatable = false)
     private Long id;
 
     @NotNull
@@ -47,4 +46,7 @@ public class Order {
     }
 
 
+    public void changeStatus(String status) {
+        this.status = status;
+    }
 }
