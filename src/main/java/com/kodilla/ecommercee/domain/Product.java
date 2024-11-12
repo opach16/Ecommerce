@@ -2,24 +2,26 @@ package com.kodilla.ecommercee.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name = "PRODUCT_ID", unique = true)
+    @Column(name = "PRODUCT_ID", unique = true, nullable = false, updatable = false)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
@@ -46,8 +48,16 @@ public class Product {
     @Column(name = "CREATED_AT", updatable = false)
     private LocalDateTime createdAt;
 
+    public Product(String name, String description, BigDecimal price, Integer stock, Group group) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.group = group;
+    }
+
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     }
 }

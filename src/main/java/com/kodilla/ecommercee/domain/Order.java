@@ -11,13 +11,14 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "ORDERS")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name="ID",unique=true,nullable=false,updatable=false)
+    @NotNull
+    @Column(name="ID")
     private Long id;
 
     @NotNull
@@ -38,14 +39,6 @@ public class Order {
     @JoinColumn(name="USER_ID")
     private User user;
 
-    public Order(String status, LocalDate orderDate, Cart cart, User user) {
-        this.status = status;
-        this.orderDate = orderDate;
-        this.cart = cart;
-        this.user = user;
-    }
 
-    public void changeStatus(String status) {
-        this.status = status;
-    }
+
 }
