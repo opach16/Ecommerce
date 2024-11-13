@@ -1,7 +1,9 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.Cart;
+import com.kodilla.ecommercee.domain.CartItem;
 import com.kodilla.ecommercee.domain.dto.CartDto;
+import com.kodilla.ecommercee.domain.dto.CartItemDto;
 import com.kodilla.ecommercee.mapper.CartItemMapper;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.repository.CartItemRepository;
@@ -9,6 +11,9 @@ import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -24,5 +29,11 @@ public class CartService {
     public void createCart(CartDto cartDto) {
         Cart cart = cartMapper.mapToCart(cartDto);
         cartRepository.save(cart);
+    }
+
+    public List<CartItemDto> getAllCartItems(Long cartId) {
+        List<CartItem> cartItemList = cartItemRepository.findCartItemByCartId(cartId);
+
+        return cartItemMapper.mapToCartItemDtoList(cartItemList);
     }
 }

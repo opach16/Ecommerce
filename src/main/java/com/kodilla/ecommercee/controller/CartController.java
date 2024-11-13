@@ -22,10 +22,14 @@ public class CartController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createCart(@RequestBody CartDto cartDto){
-
         cartService.createCart(cartDto);
-
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{cartId}/items")
+    public ResponseEntity<List<CartItemDto>> getCartItems(@PathVariable Long cartId){
+        List<CartItemDto> cartItemDtos = cartService.getAllCartItems(cartId);
+        return ResponseEntity.ok(cartItemDtos);
     }
 
 
@@ -48,11 +52,6 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-
-    @GetMapping("/{cartId}/items")
-    public List<CartItemDto> getCartItems(@PathVariable Long cartId){
-        return new ArrayList<>();
-    }
 
 
 

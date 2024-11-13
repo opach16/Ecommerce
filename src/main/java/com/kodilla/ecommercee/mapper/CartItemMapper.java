@@ -11,7 +11,9 @@ import com.kodilla.ecommercee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,4 +37,9 @@ public class CartItemMapper {
     }
 
 
+    public List<CartItemDto> mapToCartItemDtoList(List<CartItem> cartItemList) {
+        return cartItemList.stream()
+                .map(this::mapToCartItemDto)
+                .toList();
+    }
 }
