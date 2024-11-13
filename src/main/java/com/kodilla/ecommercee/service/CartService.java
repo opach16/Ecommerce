@@ -13,7 +13,6 @@ import com.kodilla.ecommercee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,7 +44,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public void deleteCartItem(Long cartItemId) {
+    public void deleteCartItemById(Long cartItemId) {
         cartItemRepository.deleteById(cartItemId);
     }
 }
