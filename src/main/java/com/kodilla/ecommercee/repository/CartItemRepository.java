@@ -20,4 +20,6 @@ public interface CartItemRepository extends CrudRepository<CartItem, Long> {
     CartItem save(CartItem order);
 
     void deleteById(Long id);
+
+    List<CartItem> findCartItemByCartId(Long cartId);
 }
