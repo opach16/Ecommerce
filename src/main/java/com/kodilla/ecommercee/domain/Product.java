@@ -2,10 +2,7 @@ package com.kodilla.ecommercee.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +10,9 @@ import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "PRODUCTS")
 public class Product {
@@ -44,7 +43,6 @@ public class Product {
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
-    @NotNull
     @Column(name = "CREATED_AT", updatable = false)
     private LocalDateTime createdAt;
 
