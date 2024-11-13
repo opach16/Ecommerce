@@ -11,7 +11,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "`GROUPS`")
 public class Group {
@@ -33,7 +35,6 @@ public class Group {
     @OneToMany(mappedBy = "group", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Product> products = new ArrayList<>();
 
-    @NotNull
     @Column(name = "CREATED_AT", updatable = false)
     private LocalDateTime createdAt;
 

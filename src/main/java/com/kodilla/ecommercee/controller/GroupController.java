@@ -1,32 +1,44 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.dto.GroupDto;
+import com.kodilla.ecommercee.service.GroupService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/groups")
 public class GroupController {
 
+    private final GroupService groupService;
+
     @GetMapping
-    public List<GroupDto> getAllGroups() {
-        return new ArrayList<>();
+    public ResponseEntity<List<GroupDto>> getAllGroups() {
+        return ResponseEntity.ok(groupService.getAllGroups());
     }
 
     @GetMapping("/{groupId}")
-    public GroupDto getGroupById(@PathVariable Long groupId) {
-        return new GroupDto(1L, "testGroup", "testGroupDesc");
+    public ResponseEntity<GroupDto> getGroupById(@PathVariable Long groupId) {
+        return ResponseEntity.ok(groupService.getGroupById(groupId));
     }
 
     @PostMapping
-    public void addGroup(GroupDto groupDto) {
-
+    public ResponseEntity<Void> addGroup(@RequestBody GroupDto groupDto) {
+        groupService.addGroup(groupDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public GroupDto updateGroup(GroupDto groupDto) {
-        return new GroupDto(1L, "updatedGroup", "updatedGroupDesc");
+    public ResponseEntity<GroupDto> updateGroup(@RequestBody GroupDto groupDto) {
+        return ResponseEntity.ok(groupService.updateGroup(groupDto));
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+        groupService.deleteGroup(groupId);
+        return ResponseEntity.ok().build();
     }
 }
