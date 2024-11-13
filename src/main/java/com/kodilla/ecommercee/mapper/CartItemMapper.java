@@ -36,7 +36,6 @@ public class CartItemMapper {
         return new CartItem(cartItemDto.getId(),cart,cartItemDto.getQuantity(),product);
     }
 
-
     public List<CartItemDto> mapToCartItemDtoList(List<CartItem> cartItemList) {
         return cartItemList.stream()
                 .map(this::mapToCartItemDto)

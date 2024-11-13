@@ -3,6 +3,7 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
+import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,16 +28,23 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}/items")
-    public ResponseEntity<List<CartItemDto>> getCartItems(@PathVariable Long cartId){
+    public ResponseEntity<List<CartItemDto>> getCartItems(@PathVariable Long cartId) throws CartNotFoundException{
         List<CartItemDto> cartItemDtos = cartService.getAllCartItems(cartId);
         return ResponseEntity.ok(cartItemDtos);
+    }
+
+    @PostMapping(value = "/{cartId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addCartItem(@PathVariable Long cartId, @RequestBody CartItemDto cartItemDto) throws CartNotFoundException{
+       cartService.addCartItem(cartId,cartItemDto);
+        return ResponseEntity.ok().build();
     }
 
 
 
 
 
-    @PutMapping (consumes = MediaType.APPLICATION_JSON_VALUE)
+
+        @PutMapping (consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCart(@RequestBody CartDto cartDto){
         return ResponseEntity.ok().build();
     }
@@ -56,10 +64,7 @@ public class CartController {
 
 
 
-    @PostMapping(value = "/{cartId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addItem(@PathVariable Long cartId, @RequestBody CartItemDto cartItemDto){
-        return ResponseEntity.ok().build();
-    }
+
 
     @DeleteMapping(value = "/{cartId}/{cartItemId}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long cartId, @PathVariable Long cartItemId){

@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.CartItem;
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
+import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.mapper.CartItemMapper;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.repository.CartItemRepository;
@@ -35,5 +36,12 @@ public class CartService {
         List<CartItem> cartItemList = cartItemRepository.findCartItemByCartId(cartId);
 
         return cartItemMapper.mapToCartItemDtoList(cartItemList);
+    }
+
+    public void addCartItem(Long cartId, CartItemDto cartItemDto) throws CartNotFoundException {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(CartNotFoundException::new);
+        CartItem cartItem = cartItemMapper.mapToCartItem(cartItemDto);
+        cart.addCartItem(cartItem);
+        cartRepository.save(cart);
     }
 }
