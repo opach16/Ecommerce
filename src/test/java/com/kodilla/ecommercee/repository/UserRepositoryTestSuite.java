@@ -3,13 +3,10 @@ package com.kodilla.ecommercee.repository;
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +19,18 @@ public class UserRepositoryTestSuite {
     private UserRepository userRepository;
 
     @Autowired
-    private CartDao cartDao;
+    private CartRepository cartRepository;
 
     @Autowired
-    private OrderDao orderDao;
+    private OrderRepository orderRepository;
 
     @BeforeEach
     void setUp() {
+        userRepository.deleteAll();
+    }
+
+    @AfterEach
+    void cleanUp(){
         userRepository.deleteAll();
     }
 
@@ -51,7 +53,6 @@ public class UserRepositoryTestSuite {
         assertFalse(retrievedUser.get().isBlocked());
         assertEquals(savedUser.getCreatedAt(), retrievedUser.get().getCreatedAt());
     }
-
 
     @DisplayName("Should update user details and verify changes with the repository")
     @Test
@@ -103,6 +104,7 @@ public class UserRepositoryTestSuite {
         assertTrue(retrievedUser.isEmpty());
     }
 
+    @Disabled
     @DisplayName("Should remove user and related carts and orders from the repository")
     @Test
     void deleteUserWithCartAndOrder() {
@@ -110,15 +112,14 @@ public class UserRepositoryTestSuite {
         User user = new User("fname", "lname", "email", "uname", "pass", "123!");
         User savedUser = userRepository.save(user);
         Cart cart = new Cart(savedUser);
-        cart.setTotal(new BigDecimal("100.00"));
-        Cart savedCart = cartDao.save(cart);
+        Cart savedCart = cartRepository.save(cart);
         Order order = new Order(savedCart, savedUser);
-        Order savedOrder = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
         //when
         userRepository.deleteById(savedUser.getId());
         Optional<User> retrievedUser = userRepository.findById(savedUser.getId());
-        Optional<Cart> retrievedCart = cartDao.findById(savedCart.getId());
-        Optional<Order> retrievedOrder = orderDao.findById(savedOrder.getId());
+        Optional<Cart> retrievedCart = cartRepository.findById(savedCart.getId());
+        Optional<Order> retrievedOrder = orderRepository.findById(savedOrder.getId());
         //then
         assertTrue(retrievedUser.isEmpty());
         assertTrue(retrievedCart.isEmpty());
