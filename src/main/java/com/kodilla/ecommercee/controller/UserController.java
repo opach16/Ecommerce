@@ -1,26 +1,39 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.dto.LoginRequest;
 import com.kodilla.ecommercee.domain.dto.UserDto;
+import com.kodilla.ecommercee.service.AuthenticationService;
+import com.kodilla.ecommercee.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
 
-    @PostMapping
-    public void addUser(@RequestBody UserDto userDto) {
+    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
+    @PostMapping
+    public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
+        userService.addUser(userDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/block/{userId}")
-    public UserDto blockUser(@PathVariable Long userId) {
-        return new UserDto(1L, "name", "lastname", "mail", "username", "pass", "key", true, LocalDateTime.now());
+    public ResponseEntity<UserDto> blockUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.blockUser(userId));
     }
 
-    @GetMapping("/generate-key/{userId}")
-    public String generateKey(@PathVariable Long userId) {
-        return "testAccessKey_1234!@#";
+    @GetMapping("/generate-key")
+    public ResponseEntity<String> generateKey(@RequestBody LoginRequest loginRequest) {
+        boolean isAuthenticated = authenticationService.authenticateLogin(loginRequest);
+        if (!isAuthenticated) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
+        }
+        return ResponseEntity.ok(authenticationService.generateKey(loginRequest.getUsername()));
     }
 }

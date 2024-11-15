@@ -2,10 +2,7 @@ package com.kodilla.ecommercee.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -14,7 +11,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "USERS")
 public class User {
@@ -45,9 +44,11 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    @NotNull
     @Column(name = "ACCESS_KEY")
     private String accessKey;
+
+    @Column(name = "ACCESS_EXPIRATION_TIME")
+    private LocalDateTime accessKeyExpirationTime;
 
     @NotNull
     @Column(name = "BLOCKED")
@@ -59,7 +60,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
 
-    @NotNull
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
