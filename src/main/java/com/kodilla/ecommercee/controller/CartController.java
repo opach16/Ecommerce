@@ -41,7 +41,7 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/{cartItemId}")
+    @DeleteMapping(value = "/item/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(@PathVariable Long cartItemId)  {
         cartService.deleteCartItemById(cartItemId);
         return ResponseEntity.ok().build();
