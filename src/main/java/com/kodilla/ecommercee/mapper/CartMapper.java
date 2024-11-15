@@ -33,9 +33,7 @@ public class CartMapper {
                 cartDto.getTotalPrice()
         );
     }
-    public CartDto mapToCartDto(Cart cart) {
-        return new CartDto(cart.getId(),cart.getUser().getId(), cart.isOrdered(), cart.getTotal());
-    }
+
 
 
 

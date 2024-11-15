@@ -23,7 +23,7 @@ public class CartService {
     private final CartMapper cartMapper;
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
-    private final UserRepository userRepository;
+
 
 
     public void createCart(CartDto cartDto) {
