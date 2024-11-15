@@ -1,7 +1,9 @@
 package com.kodilla.ecommercee.controller;
 
-
 import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.exception.GroupNotFoundException;
+import com.kodilla.ecommercee.exception.ProductNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,10 +13,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
 
-
-
     @ExceptionHandler(CartNotFoundException.class)
     public ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }  
+  
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GroupNotFoundException.class)
+    public ResponseEntity<Object> handleGroupNotFoundException(GroupNotFoundException exception) {
+
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

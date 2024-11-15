@@ -1,39 +1,44 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.dto.ProductDto;
+import com.kodilla.ecommercee.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/products")
 public class ProductController {
 
+    private final ProductService productService;
+
     @GetMapping
-    public List<ProductDto> getAllProducts() {
-        return new ArrayList<>();
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping(value = "{productId}")
-    public ProductDto getProductById(@PathVariable Long productId) {
-        return new ProductDto(1L, 6L, "test", "testDesc", new BigDecimal(150), 30);
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId) {
+        return ResponseEntity.ok(productService.getProductById(productId));
     }
 
     @PostMapping
-    public void addProduct(ProductDto productDto) {
-
+    public ResponseEntity<Void> addProduct(@RequestBody ProductDto productDto) {
+        productService.addProduct(productDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ProductDto updateProduct(ProductDto productDto) {
-        return new ProductDto(2L, 4L, "updated", "updatedDesc", new BigDecimal(4), 12);
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.updateProduct(productDto));
     }
 
     @DeleteMapping("/{productId}")
-    public void deleteProduct(@PathVariable Long productId) {
-
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.ok().build();
     }
 }
