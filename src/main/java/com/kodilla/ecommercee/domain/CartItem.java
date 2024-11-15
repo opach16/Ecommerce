@@ -20,7 +20,6 @@ public class CartItem {
     @Column(name="ID",unique = true, nullable = false, updatable = false)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name="CART_ID")
     private Cart cart;

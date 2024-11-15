@@ -41,6 +41,13 @@ public class Cart {
 
     private BigDecimal total;
 
+    public Cart(Long id, boolean ordered, User user, BigDecimal total) {
+        this.id = id;
+        this.ordered = ordered;
+        this.user = user;
+        this.total = total;
+    }
+
     public Cart(User user) {
         this.user = user;
         this.cartItems  = new ArrayList<CartItem>();

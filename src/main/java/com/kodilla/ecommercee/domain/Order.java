@@ -45,6 +45,12 @@ public class Order {
         this.status = "CREATED";
     }
 
+    public Order(Cart cart) {
+        this.cart = cart;
+        this.user = cart.getUser();
+        this.orderDate = LocalDate.now();
+        this.status = "CREATED";
+    }
 
     public void changeStatus(String status) {
         this.status = status;
