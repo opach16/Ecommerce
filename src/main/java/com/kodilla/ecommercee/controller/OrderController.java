@@ -23,9 +23,13 @@ public class OrderController {
 
 
     @GetMapping
-    public List<OrderDto> getAllOrders(){
-        return new ArrayList<>();
+    public ResponseEntity<List<OrderDto>> getAllOrders(){
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
+
+
+
+
 
     @GetMapping("/{orderId}")
     public OrderDto getOrderById(@PathVariable Long orderId){

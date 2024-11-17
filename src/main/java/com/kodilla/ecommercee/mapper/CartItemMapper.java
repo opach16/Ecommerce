@@ -5,6 +5,8 @@ import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.CartItem;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
+import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.repository.CartItemRepository;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
@@ -26,13 +28,13 @@ public class CartItemMapper {
         return new CartItemDto(cartItem.getId(),
                cartItem.getCart().getId(), cartItem.getProduct().getId(),cartItem.getQuantity());
     }
-    public CartItem mapToCartItem(CartItemDto cartItemDto) {
+    public CartItem mapToCartItem(CartItemDto cartItemDto) throws CartNotFoundException,ProductNotFoundException {
 
         if(cartItemDto.getCartId()==null || cartItemDto.getProductId()==null){
             throw new IllegalArgumentException("Invalid cartItemDto");
         }
-        Cart cart = cartRepository.findById(cartItemDto.getCartId()).orElseThrow(()->new IllegalArgumentException("Invalid cartId" + cartItemDto.getCartId()));
-        Product product = productRepository.findById(cartItemDto.getProductId()).orElseThrow(()->new IllegalArgumentException("Invalid productId" + cartItemDto.getProductId()));
+        Cart cart = cartRepository.findById(cartItemDto.getCartId()).orElseThrow(CartNotFoundException::new);
+        Product product = productRepository.findById(cartItemDto.getProductId()).orElseThrow(ProductNotFoundException::new);
         return new CartItem(cartItemDto.getId(),cart,cartItemDto.getQuantity(),product);
     }
 
