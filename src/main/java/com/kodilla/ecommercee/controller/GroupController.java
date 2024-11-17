@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.dto.GroupDto;
+import com.kodilla.ecommercee.exception.GroupNotFoundException;
 import com.kodilla.ecommercee.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<GroupDto> getGroupById(@PathVariable Long groupId) {
+    public ResponseEntity<GroupDto> getGroupById(@PathVariable Long groupId) throws GroupNotFoundException {
         return ResponseEntity.ok(groupService.getGroupById(groupId));
     }
 
@@ -32,12 +33,12 @@ public class GroupController {
     }
 
     @PutMapping
-    public ResponseEntity<GroupDto> updateGroup(@RequestBody GroupDto groupDto) {
+    public ResponseEntity<GroupDto> updateGroup(@RequestBody GroupDto groupDto) throws GroupNotFoundException {
         return ResponseEntity.ok(groupService.updateGroup(groupDto));
     }
 
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) throws GroupNotFoundException {
         groupService.deleteGroup(groupId);
         return ResponseEntity.ok().build();
     }

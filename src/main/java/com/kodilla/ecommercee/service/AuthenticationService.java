@@ -19,7 +19,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public String generateKey(String username) {
+    public String generateKey(String username) throws UserNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(UserNotFoundException.BY_USERNAME_MESSAGE));
         String accessKey = UUID.randomUUID().toString();
@@ -29,7 +29,7 @@ public class AuthenticationService {
         return accessKey;
     }
 
-    public boolean authenticateLogin(LoginRequest loginRequest) {
+    public boolean authenticateLogin(LoginRequest loginRequest) throws UserNotFoundException {
         User user = userRepository.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new UserNotFoundException(UserNotFoundException.BY_USERNAME_MESSAGE));
         return passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());

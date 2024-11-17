@@ -32,7 +32,7 @@ public class ProductService {
         productRepository.save(productMapper.mapToProductEntity(productDto));
     }
 
-    public ProductDto updateProduct(ProductDto productDto) {
+    public ProductDto updateProduct(ProductDto productDto) throws ProductNotFoundException {
         productRepository.findById(productDto.getId()).orElseThrow(ProductNotFoundException::new);
         Product retrievedProduct = productRepository.save(productMapper.mapToProductEntity(productDto));
         return productMapper.mapToProductDto(retrievedProduct);

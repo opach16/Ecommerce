@@ -31,7 +31,7 @@ public class GroupService {
         groupRepository.save(groupMapper.mapToGroupEntity(groupDto));
     }
 
-    public GroupDto updateGroup(GroupDto groupDto) {
+    public GroupDto updateGroup(GroupDto groupDto) throws GroupNotFoundException {
         Group group = groupRepository.findById(groupDto.getId()).orElseThrow(GroupNotFoundException::new);
         group.setName(groupDto.getName());
         group.setDescription(groupDto.getDescription());
