@@ -41,16 +41,17 @@ public class Cart {
 
     private BigDecimal total;
 
-    public Cart(Long id, boolean ordered, User user, BigDecimal total) {
+    public Cart(Long id, boolean ordered, User user,BigDecimal total) {
         this.id = id;
         this.ordered = ordered;
         this.user = user;
         this.total = total;
+        this.cartItems = new ArrayList<>();
     }
 
     public Cart(User user) {
         this.user = user;
-        this.cartItems  = new ArrayList<CartItem>();
+        this.cartItems  = new ArrayList<>();
         this.ordered = false;
     }
 
@@ -58,11 +59,6 @@ public class Cart {
         this.cartItems = cartItems;
         this.user = user;
     }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
     public void setOrdered(@NotNull boolean ordered) {
         this.ordered = ordered;
     }
