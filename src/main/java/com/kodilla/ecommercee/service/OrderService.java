@@ -35,4 +35,9 @@ public class OrderService {
         List<Order> orderList = orderRepository.findAll();
         return orderMapper.mapToOrderDtoList(orderList);
     }
+
+    public OrderDto getOrderById(Long orderId) throws OrderNotFoundException {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        return orderMapper.mapToOrderDto(order);
+    }
 }

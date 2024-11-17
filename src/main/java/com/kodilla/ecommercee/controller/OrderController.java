@@ -27,19 +27,18 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-
-
-
-
     @GetMapping("/{orderId}")
-    public OrderDto getOrderById(@PathVariable Long orderId){
-        return new OrderDto(1L,"In delivery",2L, LocalDate.of(2024,8,15),12L);
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) throws OrderNotFoundException {
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addOder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<Void> addOrder(@RequestBody OrderDto orderDto){
         return ResponseEntity.ok().build();
     }
+
+
+
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrder(@RequestBody OrderDto orderDto){
