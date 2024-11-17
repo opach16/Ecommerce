@@ -2,7 +2,11 @@ package com.kodilla.ecommercee.controller;
 
 
 import com.kodilla.ecommercee.domain.dto.OrderDto;
+import com.kodilla.ecommercee.exception.OrderNotFoundException;
+import com.kodilla.ecommercee.service.OrderService;
+import com.kodilla.ecommercee.service.ProductService;
 import jakarta.persistence.GeneratedValue;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/orders")
 public class OrderController {
+   private final OrderService orderService;
+
+
     @GetMapping
     public List<OrderDto> getAllOrders(){
         return new ArrayList<>();
@@ -34,8 +42,13 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
+
+
+
+
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId){
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
+        orderService.deleteOrder(orderId);
         return ResponseEntity.ok().build();
     }
 

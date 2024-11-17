@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.exception.CartItemNotFoundException;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,8 @@ public class OrderService {
         Cart cart = cartRepository.findById(cartId).orElseThrow(CartNotFoundException::new);
         Order order = new Order(cart);
         orderRepository.save(order);
+    }
+    public void deleteOrder(Long orderId)  {
+        orderRepository.deleteById(orderId);
     }
 }
