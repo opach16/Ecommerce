@@ -43,9 +43,12 @@ public class OrderController {
 
 
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateOrder(@RequestBody OrderDto orderDto){
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<Void> updateOrder(@PathVariable Long orderId,@RequestBody String statusOrder) throws OrderNotFoundException {
+        orderService.updateOrder(orderId, statusOrder);
+
         return ResponseEntity.ok().build();
+
     }
 
 

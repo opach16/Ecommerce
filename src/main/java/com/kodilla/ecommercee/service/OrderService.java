@@ -50,4 +50,10 @@ public class OrderService {
         orderRepository.save(order);
 
     }
+
+    public void updateOrder(Long orderId, String statusOrder) throws OrderNotFoundException {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        order.changeStatus(statusOrder);
+        orderRepository.save(order);
+    }
 }
