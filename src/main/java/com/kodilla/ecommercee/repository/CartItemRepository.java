@@ -14,12 +14,5 @@ import java.util.Optional;
 public interface CartItemRepository extends CrudRepository<CartItem, Long> {
     @Override
     List<CartItem> findAll();
-
-    Optional<CartItem> findById(Long id);
-
-    CartItem save(CartItem order);
-
-    void deleteById(Long id);
-
     List<CartItem> findCartItemByCartId(Long cartId);
 }

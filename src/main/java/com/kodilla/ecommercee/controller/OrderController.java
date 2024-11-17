@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
 
+import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.OrderDto;
 import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.service.OrderService;
@@ -32,8 +33,10 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<Void> addOrder(@RequestBody CartDto cartDto){
+        orderService.addOrder(cartDto);
         return ResponseEntity.ok().build();
     }
 
