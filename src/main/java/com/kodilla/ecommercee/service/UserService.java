@@ -22,7 +22,7 @@ public class UserService {
         userRepository.save(userMapper.mapToUserEntity(userDto));
     }
 
-    public UserDto blockUser(Long userId) {
+    public UserDto blockUser(Long userId) throws UserNotFoundException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(UserNotFoundException.BY_ID_MESSAGE));
         if (user.isBlocked()) {

@@ -5,16 +5,15 @@ import com.kodilla.ecommercee.domain.CartItem;
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.CartItemMapper;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.repository.CartItemRepository;
 import com.kodilla.ecommercee.repository.CartRepository;
-import com.kodilla.ecommercee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +22,6 @@ public class CartService {
     private final CartMapper cartMapper;
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
-
-
 
     public void createCart(CartDto cartDto) {
         Cart cart = cartMapper.mapToCart(cartDto);
@@ -37,7 +34,7 @@ public class CartService {
         return cartItemMapper.mapToCartItemDtoList(cartItemList);
     }
 
-    public void addCartItem(Long cartId, CartItemDto cartItemDto) throws CartNotFoundException {
+    public void addCartItem(Long cartId, CartItemDto cartItemDto) throws CartNotFoundException, ProductNotFoundException {
         Cart cart = cartRepository.findById(cartId).orElseThrow(CartNotFoundException::new);
         CartItem cartItem = cartItemMapper.mapToCartItem(cartItemDto);
         cart.addCartItem(cartItem);

@@ -5,6 +5,7 @@ import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
 import com.kodilla.ecommercee.exception.CartItemNotFoundException;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.service.CartService;
 import com.kodilla.ecommercee.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class CartController {
     }
 
     @PostMapping(value = "/{cartId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addCartItem(@PathVariable Long cartId, @RequestBody CartItemDto cartItemDto) throws CartNotFoundException {
+    public ResponseEntity<Void> addCartItem(@PathVariable Long cartId, @RequestBody CartItemDto cartItemDto) throws CartNotFoundException, ProductNotFoundException {
         cartService.addCartItem(cartId, cartItemDto);
         return ResponseEntity.ok().build();
     }

@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.dto.LoginRequest;
 import com.kodilla.ecommercee.domain.dto.UserDto;
+import com.kodilla.ecommercee.exception.UserNotFoundException;
 import com.kodilla.ecommercee.service.AuthenticationService;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,12 @@ public class UserController {
     }
 
     @PutMapping("/block/{userId}")
-    public ResponseEntity<UserDto> blockUser(@PathVariable Long userId) {
+    public ResponseEntity<UserDto> blockUser(@PathVariable Long userId) throws UserNotFoundException {
         return ResponseEntity.ok(userService.blockUser(userId));
     }
 
     @GetMapping("/generate-key")
-    public ResponseEntity<String> generateKey(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<String> generateKey(@RequestBody LoginRequest loginRequest) throws UserNotFoundException {
         boolean isAuthenticated = authenticationService.authenticateLogin(loginRequest);
         if (!isAuthenticated) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
