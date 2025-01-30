@@ -20,12 +20,11 @@ public class UserController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
-        userService.addUser(userDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.addUser(userDto));
     }
 
-    @PutMapping("/block/{userId}")
+    @PutMapping(value = "/block/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> blockUser(@PathVariable Long userId) throws UserNotFoundException {
         return ResponseEntity.ok(userService.blockUser(userId));
     }

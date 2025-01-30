@@ -28,19 +28,17 @@ public class OrderController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addOrder(@RequestBody CartDto cartDto) {
-        orderService.addOrder(cartDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderDto> addOrder(@RequestBody CartDto cartDto) {
+        return ResponseEntity.ok(orderService.addOrder(cartDto));
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<Void> updateOrder(@PathVariable Long orderId, @RequestBody String statusOrder) throws OrderNotFoundException {
-        orderService.updateOrder(orderId, statusOrder);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long orderId, @RequestBody String statusOrder) throws OrderNotFoundException {;
+        return ResponseEntity.ok(orderService.updateOrder(orderId, statusOrder));
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) throws OrderNotFoundException {
         orderService.deleteOrder(orderId);
         return ResponseEntity.ok().build();
     }

@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.CartItem;
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
+import com.kodilla.ecommercee.exception.CartItemNotFoundException;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.CartItemMapper;
@@ -23,25 +24,25 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
 
-    public void createCart(CartDto cartDto) {
-        Cart cart = cartMapper.mapToCart(cartDto);
-        cartRepository.save(cart);
+    public CartDto createCart(CartDto cartDto) {
+        Cart savedCart = cartRepository.save(cartMapper.mapToCart(cartDto));
+        return cartMapper.mapToCartDto(savedCart);
     }
 
     public List<CartItemDto> getAllCartItems(Long cartId) {
-        List<CartItem> cartItemList = cartItemRepository.findCartItemByCartId(cartId);
-
-        return cartItemMapper.mapToCartItemDtoList(cartItemList);
+        return cartItemMapper.mapToCartItemDtoList(cartItemRepository.findCartItemByCartId(cartId));
     }
 
-    public void addCartItem(Long cartId, CartItemDto cartItemDto) throws CartNotFoundException, ProductNotFoundException {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(CartNotFoundException::new);
+    public CartItemDto addCartItem(CartItemDto cartItemDto) throws CartNotFoundException, ProductNotFoundException {
+        Cart cart = cartRepository.findById(cartItemDto.getCartId()).orElseThrow(CartNotFoundException::new);
         CartItem cartItem = cartItemMapper.mapToCartItem(cartItemDto);
         cart.addCartItem(cartItem);
         cartRepository.save(cart);
+        return cartItemMapper.mapToCartItemDto(cartItem);
     }
 
-    public void deleteCartItemById(Long cartItemId) {
+    public void deleteCartItemById(Long cartItemId) throws CartItemNotFoundException {
+        cartItemRepository.findById(cartItemId).orElseThrow(CartItemNotFoundException::new);
         cartItemRepository.deleteById(cartItemId);
     }
 }

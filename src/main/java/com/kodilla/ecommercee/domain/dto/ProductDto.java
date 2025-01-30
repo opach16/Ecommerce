@@ -18,4 +18,12 @@ public class ProductDto {
     private String description;
     private BigDecimal price;
     private Integer stock;
+
+    public ProductDto(Long groupId, String name, String description, BigDecimal price, Integer stock) {
+        this.groupId = groupId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+    }
 }

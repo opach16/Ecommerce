@@ -33,7 +33,6 @@ public class GroupMapper {
 
     public Group mapToGroupEntity(GroupDto groupDto) {
         return Group.builder()
-                .id(groupDto.getId())
                 .name(groupDto.getName())
                 .description(groupDto.getDescription())
                 .build();

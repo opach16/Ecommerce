@@ -28,9 +28,8 @@ public class GroupController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addGroup(@RequestBody GroupDto groupDto) {
-        groupService.addGroup(groupDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<GroupDto> addGroup(@RequestBody GroupDto groupDto) {
+        return ResponseEntity.ok(groupService.addGroup(groupDto));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

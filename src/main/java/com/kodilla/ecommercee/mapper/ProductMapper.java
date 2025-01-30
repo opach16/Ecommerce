@@ -33,7 +33,6 @@ public class ProductMapper {
 
     public Product mapToProductEntity(ProductDto productDto) {
         return Product.builder()
-                .id(productDto.getId())
                 .group(productDto.getGroupId() != null ? groupRepository.findById(productDto.getGroupId()).orElse(null) : null)
                 .name(productDto.getName())
                 .description(productDto.getDescription())

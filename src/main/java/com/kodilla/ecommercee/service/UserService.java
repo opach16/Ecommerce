@@ -16,10 +16,14 @@ public class UserService {
     private final UserMapper userMapper;
     private final AuthenticationService authenticationService;
 
-    public void addUser(UserDto userDto) {
+    public UserDto addUser(UserDto userDto) throws UserNotFoundException {
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+            throw new UserNotFoundException("User " + userDto.getUsername() + " already exists");
+        }
         String hashedPassword = authenticationService.hashPassword(userDto.getPassword());
         userDto.setPassword(hashedPassword);
-        userRepository.save(userMapper.mapToUserEntity(userDto));
+        User savedUser = userRepository.save(userMapper.mapToUserEntity(userDto));
+        return userMapper.mapToUserDto(savedUser);
     }
 
     public UserDto blockUser(Long userId) throws UserNotFoundException {

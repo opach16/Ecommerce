@@ -4,7 +4,6 @@ import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.OrderDto;
-import com.kodilla.ecommercee.exception.CartItemNotFoundException;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.CartMapper;
@@ -14,7 +13,6 @@ import com.kodilla.ecommercee.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,18 +23,18 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final CartMapper cartMapper;
 
-    public void createOrder(Long cartId) throws CartNotFoundException {
+    public OrderDto createOrder(Long cartId) throws CartNotFoundException {
         Cart cart = cartRepository.findById(cartId).orElseThrow(CartNotFoundException::new);
-        Order order = new Order(cart);
-        orderRepository.save(order);
+        return orderMapper.mapToOrderDto(orderRepository.save(new Order(cart)));
     }
-    public void deleteOrder(Long orderId)  {
+
+    public void deleteOrder(Long orderId) throws OrderNotFoundException {
+        orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         orderRepository.deleteById(orderId);
     }
 
     public List<OrderDto> getAllOrders() {
-        List<Order> orderList = orderRepository.findAll();
-        return orderMapper.mapToOrderDtoList(orderList);
+        return orderMapper.mapToOrderDtoList(orderRepository.findAll());
     }
 
     public OrderDto getOrderById(Long orderId) throws OrderNotFoundException {
@@ -44,16 +42,14 @@ public class OrderService {
         return orderMapper.mapToOrderDto(order);
     }
 
-    public void addOrder(CartDto cartDto) {
+    public OrderDto addOrder(CartDto cartDto) {
         Cart cart = cartMapper.mapToCart(cartDto);
-        Order order = new Order(cart);
-        orderRepository.save(order);
-
+        return orderMapper.mapToOrderDto(orderRepository.save(new Order(cart)));
     }
 
-    public void updateOrder(Long orderId, String statusOrder) throws OrderNotFoundException {
+    public OrderDto updateOrder(Long orderId, String statusOrder) throws OrderNotFoundException {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         order.changeStatus(statusOrder);
-        orderRepository.save(order);
+        return orderMapper.mapToOrderDto(orderRepository.save(order));
     }
 }

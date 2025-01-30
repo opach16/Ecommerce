@@ -28,9 +28,8 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addProduct(@RequestBody ProductDto productDto) {
-        productService.addProduct(productDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.addProduct(productDto));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

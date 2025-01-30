@@ -33,7 +33,7 @@ public class Group {
     private String description;
 
     @OneToMany(mappedBy = "group", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private List<Product> products = new ArrayList<>();
+    private List<Product> products;
 
     @Column(name = "CREATED_AT", updatable = false)
     private LocalDateTime createdAt;
@@ -46,6 +46,7 @@ public class Group {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        products = new ArrayList<>();
     }
 
     @PreRemove

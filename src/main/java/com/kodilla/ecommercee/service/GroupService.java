@@ -18,8 +18,7 @@ public class GroupService {
     private final GroupMapper groupMapper;
 
     public List<GroupDto> getAllGroups() {
-        List<Group> retrievedGroups = groupRepository.findAll();
-        return groupMapper.mapToGroupDtoList(retrievedGroups);
+        return groupMapper.mapToGroupDtoList(groupRepository.findAll());
     }
 
     public GroupDto getGroupById(Long id) throws GroupNotFoundException {
@@ -27,8 +26,9 @@ public class GroupService {
         return groupMapper.mapToGroupDto(group);
     }
 
-    public void addGroup(GroupDto groupDto) {
-        groupRepository.save(groupMapper.mapToGroupEntity(groupDto));
+    public GroupDto addGroup(GroupDto groupDto) {
+        Group savedGroup = groupRepository.save(groupMapper.mapToGroupEntity(groupDto));
+        return groupMapper.mapToGroupDto(savedGroup);
     }
 
     public GroupDto updateGroup(GroupDto groupDto) throws GroupNotFoundException {

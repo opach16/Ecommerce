@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,19 +27,22 @@ public class ProductService {
         return productMapper.mapToProductDto(product);
     }
 
-    public void addProduct(ProductDto productDto) {
-        productRepository.save(productMapper.mapToProductEntity(productDto));
+    public ProductDto addProduct(ProductDto productDto) {
+        Product savedProduct = productRepository.save(productMapper.mapToProductEntity(productDto));
+        return productMapper.mapToProductDto(savedProduct);
     }
 
     public ProductDto updateProduct(ProductDto productDto) throws ProductNotFoundException {
-        productRepository.findById(productDto.getId()).orElseThrow(ProductNotFoundException::new);
-        Product retrievedProduct = productRepository.save(productMapper.mapToProductEntity(productDto));
-        return productMapper.mapToProductDto(retrievedProduct);
+        Product retrievedProduct = productRepository.findById(productDto.getId())
+                .orElseThrow(ProductNotFoundException::new);
+        retrievedProduct.setName(productDto.getName());
+        retrievedProduct.setDescription(productDto.getDescription());
+        retrievedProduct.setPrice(productDto.getPrice());
+        return productMapper.mapToProductDto(productRepository.save(retrievedProduct));
     }
 
     public void deleteProduct(Long id) throws ProductNotFoundException {
-        Optional<Product> retrievedProduct = productRepository.findById(id);
-        Product product = retrievedProduct.orElseThrow(ProductNotFoundException::new);
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         productRepository.delete(product);
     }
 }
