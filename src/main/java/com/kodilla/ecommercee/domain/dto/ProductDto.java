@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.domain.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class ProductDto {
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private Long groupId;
     private String name;

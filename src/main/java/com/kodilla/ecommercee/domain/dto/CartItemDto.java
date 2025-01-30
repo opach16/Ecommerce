@@ -1,11 +1,13 @@
 package com.kodilla.ecommercee.domain.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
 public class CartItemDto {
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private Long cartId;
     private Long productId;

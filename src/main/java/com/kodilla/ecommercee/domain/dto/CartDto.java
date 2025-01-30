@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.domain.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 public class CartDto {
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private Long userId;
     private boolean ordered;
