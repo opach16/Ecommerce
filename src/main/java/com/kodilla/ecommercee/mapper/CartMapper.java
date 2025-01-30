@@ -33,5 +33,4 @@ public class CartMapper {
                 cartDto.getTotalPrice()
         );
     }
-
 }

@@ -18,7 +18,6 @@ public class UserMapper {
     }
 
     public UserDto mapToUserDto(User user) {
-
         return UserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

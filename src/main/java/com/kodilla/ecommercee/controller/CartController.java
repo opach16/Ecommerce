@@ -1,9 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
-
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.domain.dto.CartItemDto;
-import com.kodilla.ecommercee.exception.CartItemNotFoundException;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.service.CartService;
@@ -13,8 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,7 +27,7 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}/items")
-    public ResponseEntity<List<CartItemDto>> getCartItems(@PathVariable Long cartId)  {
+    public ResponseEntity<List<CartItemDto>> getCartItems(@PathVariable Long cartId) {
         List<CartItemDto> cartItemDtos = cartService.getAllCartItems(cartId);
         return ResponseEntity.ok(cartItemDtos);
     }
@@ -43,12 +39,12 @@ public class CartController {
     }
 
     @DeleteMapping(value = "/item/{cartItemId}")
-    public ResponseEntity<Void> deleteCartItem(@PathVariable Long cartItemId)  {
+    public ResponseEntity<Void> deleteCartItem(@PathVariable Long cartItemId) {
         cartService.deleteCartItemById(cartItemId);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{cartId}/createorder")
+    @GetMapping("/{cartId}/create-order")
     public ResponseEntity<Void> createOrder(@PathVariable Long cartId) throws CartNotFoundException {
         orderService.createOrder(cartId);
         return ResponseEntity.ok().build();

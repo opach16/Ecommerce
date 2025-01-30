@@ -7,6 +7,7 @@ import com.kodilla.ecommercee.service.AuthenticationService;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
         userService.addUser(userDto);
         return ResponseEntity.ok().build();

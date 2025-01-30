@@ -14,8 +14,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderMapper {
-    private final UserRepository userRepository;
-    CartRepository cartRepository;
 
     public OrderDto mapToOrderDto(Order order) {
         return new OrderDto(order.getId(),
@@ -25,20 +23,9 @@ public class OrderMapper {
                 order.getUser().getId());
     }
 
-    public Order mapToOrder(OrderDto orderDto) throws CartNotFoundException {
-        return Order.builder()
-                .id(orderDto.getId())
-                .status(orderDto.getStatus())
-                .orderDate(orderDto.getOrderDate())
-                .cart(cartRepository.findById(orderDto.getCartId()).orElseThrow(CartNotFoundException::new))
-                .user(userRepository.findById(orderDto.getUserId()).orElseThrow())
-                .build();
-    }
     public List<OrderDto> mapToOrderDtoList(List<Order> orders) {
         return orders.stream()
                 .map(this::mapToOrderDto)
                 .toList();
     }
-
-
 }
